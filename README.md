@@ -1,4 +1,6 @@
-# cleanhttp Functions for accessing "clean" Go http.Client values
+# cleanhttp
+
+Functions for accessing "clean" Go http.Client values
 
 -------------
 
