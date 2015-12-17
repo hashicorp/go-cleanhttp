@@ -18,7 +18,7 @@ func DefaultTransport() *http.Transport {
 		}).Dial,
 		TLSHandshakeTimeout: 10 * time.Second,
 	}
-	SetFinalizer(transport)
+	SetTransportFinalizer(transport)
 	return transport
 }
 
@@ -30,10 +30,11 @@ func DefaultClient() *http.Client {
 	}
 }
 
-func SetFinalizer(transport *http.Transport) {
-	runtime.SetFinalizer(&transport, FinalizeTransport)
-}
-
-func FinalizeTransport(t **http.Transport) {
-	(*t).CloseIdleConnections()
+// SetTransportFinalizer sets a finalizer on the transport to ensure that
+// idle connections are closed prior to garbage collection; otherwise
+// these may leak
+func SetTransportFinalizer(transport *http.Transport) {
+	runtime.SetFinalizer(&transport, func(t **http.Transport) {
+		(*t).CloseIdleConnections()
+	})
 }
