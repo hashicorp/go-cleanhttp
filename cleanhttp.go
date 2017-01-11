@@ -1,6 +1,7 @@
 package cleanhttp
 
 import (
+	"crypto/tls"
 	"net"
 	"net/http"
 	"time"
@@ -33,6 +34,23 @@ func DefaultPooledTransport() *http.Transport {
 	return transport
 }
 
+// Test not for prod use
+func NoTLSVerifyTransport() *http.Transport {
+
+	transport := &http.Transport{
+	Proxy: http.ProxyFromEnvironment,
+	Dial: (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).Dial,
+	TLSHandshakeTimeout: 10 * time.Second,
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	DisableKeepAlives:   true,
+	MaxIdleConnsPerHost: -1,
+	}
+	return transport
+}
+
 // DefaultClient returns a new http.Client with similar default values to
 // http.Client, but with a non-shared Transport, idle connections disabled, and
 // keepalives disabled.
@@ -49,5 +67,12 @@ func DefaultClient() *http.Client {
 func DefaultPooledClient() *http.Client {
 	return &http.Client{
 		Transport: DefaultPooledTransport(),
+	}
+}
+
+// Test not for prod use
+func NoTLSVerifyClient() *http.Client {
+	return &http.Client{
+		Transport: NoTLSVerifyTransport(),
 	}
 }
