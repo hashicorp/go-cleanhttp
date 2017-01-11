@@ -34,7 +34,9 @@ func DefaultPooledTransport() *http.Transport {
 	return transport
 }
 
-// Test not for prod use
+// NoTLSVerifyTransport returns a new http.Transport with options identical to
+// DefaultTransport however with TLS verification turned off. Intended only for
+// use with internal resources that are not routed on the public Internet.
 func NoTLSVerifyTransport() *http.Transport {
 
 	transport := &http.Transport{
@@ -70,7 +72,9 @@ func DefaultPooledClient() *http.Client {
 	}
 }
 
-// Test not for prod use
+// NoTLSVerifyClient returns a new http.Client with options identical to
+// DefaultClient however with TLS verification turned off. Intended only for
+// use with internal resources that are not available on the public Internet.
 func NoTLSVerifyClient() *http.Client {
 	return &http.Client{
 		Transport: NoTLSVerifyTransport(),
