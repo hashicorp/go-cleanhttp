@@ -11,9 +11,9 @@ type HandlerInput struct {
 	ErrStatus int
 }
 
-// PrintableRunesHandler is a middleware that ensures the request path
+// PrintablePathCheckHandler is a middleware that ensures the request path
 // contains only printable runes.
-func PrintableRunesHandler(next http.Handler, input *HandlerInput) http.Handler {
+func PrintablePathCheckHandler(next http.Handler, input *HandlerInput) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Nil-check on input to make it optional
 		if input == nil {

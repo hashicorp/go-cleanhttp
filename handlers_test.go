@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestPrintableRunesHandler(t *testing.T) {
+func TestPrintablePathCheckHandler(t *testing.T) {
 	getTestHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello, client")
 	})
@@ -56,7 +56,7 @@ func TestPrintableRunesHandler(t *testing.T) {
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
 			// Create test HTTP server
-			ts := httptest.NewServer(PrintableRunesHandler(getTestHandler, tc.input))
+			ts := httptest.NewServer(PrintablePathCheckHandler(getTestHandler, tc.input))
 			defer ts.Close()
 
 			res, err := http.Get(ts.URL + tc.path)
