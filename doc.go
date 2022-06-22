@@ -2,7 +2,7 @@
 // http.Transport and http.Client structs.
 //
 // Values set on http.DefaultClient and http.DefaultTransport affect all
-// callers. This can have detrimental effects, esepcially in TLS contexts,
+// callers. This can have detrimental effects, especially in TLS contexts,
 // where client or root certificates set to talk to multiple endpoints can end
 // up displacing each other, leading to hard-to-debug issues. This package
 // provides non-shared http.Client and http.Transport structs to ensure that
