@@ -1,4 +1,4 @@
-# cleanhttp
+# cleanhttp [![Go Reference](https://pkg.go.dev/badge/github.com/hashicorp/go-cleanhttp.svg)](https://pkg.go.dev/github.com/hashicorp/go-cleanhttp)
 
 Functions for accessing "clean" Go http.Client values
 
