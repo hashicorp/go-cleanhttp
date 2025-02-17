@@ -45,7 +45,5 @@ func PrintablePathCheckHandler(next http.Handler, input *HandlerInput) http.Hand
 				next.ServeHTTP(w, r)
 			}
 		}
-
-		return
 	})
 }
