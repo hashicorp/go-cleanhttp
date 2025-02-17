@@ -15,7 +15,16 @@ jobs:
               uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
               with:
                 go-version: '1.13'
-            - name: Test Go
-              run: go test -v ./...
+            - name: Run golanci-lint
+              uses: golangci/golangci-lint-action@08e2f20817b15149a52b5b3ebe7de50aff2ba8c5
+            - name: Run test and generate coverage report
+              run: go test -v -coverprofile=coverage.out ./...
+            - name: Upload coverage report
+              uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+              with:
+                path: coverage.out
+                name: Coverage-report
+            - name: Display coverage test
+              run: go tool cover -func=coverage.out
             - name: Build Go
               run: go build ./...
