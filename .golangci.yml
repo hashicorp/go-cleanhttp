@@ -1,0 +1,6 @@
+linters:
+  enable:
+    - gosimple
+
+output:
+  format: colored-line-number
