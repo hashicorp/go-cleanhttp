@@ -12,7 +12,10 @@ import (
 
 func TestPrintablePathCheckHandler(t *testing.T) {
 	getTestHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello, client")
+		_, err := fmt.Fprintln(w, "Hello, client")
+		if err != nil {
+			t.Fatal(err)
+		}
 	})
 
 	cases := map[string]struct {
