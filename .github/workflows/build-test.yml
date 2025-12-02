@@ -14,7 +14,7 @@ jobs:
             - name: Setup Go
               uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00
               with:
-                go-version: '1.13'
+                go-version: '1.24'
             - name: Run golanci-lint
               uses: golangci/golangci-lint-action@08e2f20817b15149a52b5b3ebe7de50aff2ba8c5
             - name: Run test and generate coverage report
