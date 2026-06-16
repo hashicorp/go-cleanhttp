@@ -1,30 +1,36 @@
-name: Build and Test Workflow
+name: Build and Test
 
 on:
-    pull_request:
-        branches: [ "master" ]
+  pull_request:
+  push:
+    branches: ["master"]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ["oldstable", "stable"]
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
-            - name: Setup Go
-              uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c
-              with:
-                go-version: '1.24'
-            - name: Run golanci-lint
-              uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee
-            - name: Run test and generate coverage report
-              run: go test -v -coverprofile=coverage.out ./...
-            - name: Upload coverage report
-              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-              with:
-                path: coverage.out
-                name: Coverage-report
-            - name: Display coverage test
-              run: go tool cover -func=coverage.out
-            - name: Build Go
-              run: go build ./...
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Run golanci-lint
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
+        with:
+          version: v2.12.2
+      - name: Run test and generate coverage report
+        run: go test -v -coverprofile=coverage.out ./...
+      - name: Upload coverage report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          path: coverage.out
+          name: Coverage-report
+      - name: Display coverage test
+        run: go tool cover -func=coverage.out
+      - name: Build Go
+        run: go build ./...
