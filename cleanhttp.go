@@ -36,9 +36,21 @@ func DefaultPooledTransport() *http.Transport {
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
 		ForceAttemptHTTP2:     true,
-		MaxIdleConnsPerHost:   runtime.GOMAXPROCS(0) + 1,
+		MaxIdleConnsPerHost:   defaultMaxIdleConnsPerHost(),
 	}
 	return transport
+}
+
+// defaultMaxIdleConnsPerHost returns a floor for idle connections per host.
+// Network I/O is not strictly CPU-bound, so GOMAXPROCS alone underestimates
+// useful concurrency on small core counts (see #15).
+func defaultMaxIdleConnsPerHost() int {
+	n := runtime.GOMAXPROCS(0) * 2
+	const minIdle = 8
+	if n < minIdle {
+		return minIdle
+	}
+	return n
 }
 
 // DefaultClient returns a new http.Client with similar default values to
