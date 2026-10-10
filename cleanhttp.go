@@ -36,7 +36,7 @@ func DefaultPooledTransport() *http.Transport {
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
 		ForceAttemptHTTP2:     true,
-		MaxIdleConnsPerHost:   runtime.GOMAXPROCS(0) + 1,
+		MaxIdleConnsPerHost:   max(4, runtime.GOMAXPROCS(0)+1),
 	}
 	return transport
 }
